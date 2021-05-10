@@ -1,0 +1,34 @@
+apiVersion: iofog.org/v2
+kind: Application
+metadata:
+  name: test
+spec:
+  microservices:
+    - name: sender
+      agent:
+        name: local-agent
+      config: {}
+      images:
+        x86: iofog/py-sender:v1
+        arm: iofog/py-sender:v1
+        registry: local
+      container:
+        volumes: []
+        ports: []
+        env: []
+    - name: receiver
+      agent:
+        name: local-agent
+      config: {}
+      images:
+        x86: iofog/py-receiver:v1
+        arm: iofog/py-receiver:v1
+        registry: local
+      container:
+        volumes: []
+        ports: []
+        env: []
+  routes:
+    - name: send-to-rec
+      from: sender
+      to: receiver

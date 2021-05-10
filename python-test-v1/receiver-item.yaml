@@ -1,0 +1,9 @@
+apiVersion: 'iofog.org/v2'
+kind: CatalogItem
+metadata:
+  name: 'py-receiver'
+spec:
+  description: 'receiver python'
+  x86: 'iofog/py-receiver:v1'
+  arm: 'iofog/py-receiver:v1'
+  registry: 'local'

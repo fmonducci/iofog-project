@@ -1,0 +1,9 @@
+apiVersion: 'iofog.org/v2'
+kind: CatalogItem
+metadata:
+  name: 'py-sender'
+spec:
+  description: 'python sender'
+  x86: 'iofog/py-sender:v1'
+  arm: 'iofog/py-sender:v1'
+  registry: 'local'
