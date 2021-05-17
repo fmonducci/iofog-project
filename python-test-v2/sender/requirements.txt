@@ -1,0 +1,4 @@
+ws4py
+tensorflow
+numpy
+opencv-contrib-python-headless
