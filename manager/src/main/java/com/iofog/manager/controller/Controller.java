@@ -3,23 +3,40 @@ package com.iofog.manager.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.iofog.manager.service.IoFogService;
 import com.iofog.manager.service.CTLService;
+import com.iofog.manager.service.MongoService;
 import com.iofog.manager.service.TrainingService;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 @RestController
 public class Controller {
+
+    private MongoService mongoService = new MongoService();
+
+    public Controller() throws UnknownHostException {
+    }
+
+    /*****************************
+     MongoService
+     ****************************/
+
+    @PostMapping(value = "/store", produces = "application/json")
+    public String store(@RequestBody JSONObject body) throws IOException, InterruptedException {
+        return mongoService.store(body);
+    }
+
 
     /*****************************
      iofogctl
      ****************************/
 
     @PostMapping(value = "/ctl-deploy", produces = "application/json")
-    public String volumeDeployment(@RequestBody Map<String, String> body) throws IOException, InterruptedException {
-        return CTLService.deploy(body.get("path"));
+    public String volumeDeployment(@RequestBody String body) throws IOException, InterruptedException {
+        return CTLService.deploy(body);
     }
 
     @GetMapping(value = "/ctl-describe/agent/{name}", produces = "application/json")

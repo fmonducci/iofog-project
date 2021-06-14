@@ -1,19 +1,23 @@
 package com.iofog.manager.service;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.JsonFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
+
+
+import java.io.*;
 
 public class CTLService {
 
     private static String deployCLI = "iofogctl deploy -f ";
     private static String describeCLI = "iofogctl describe ";
+    private static String basePath = "/home/fogmaster/iofog-resources/components/";
+    private static int count = 0;
 
-    public static String deploy(String filePath) throws IOException, InterruptedException {
-        String cmd = deployCLI + filePath;
+    public static String deploy(String data) throws IOException, InterruptedException {
+        String cmd = deployCLI + CTLService.getFile(data);
         Runtime run = Runtime.getRuntime();
         Process proc = run.exec(cmd);
         proc.waitFor();
@@ -55,5 +59,16 @@ public class CTLService {
 
         return output;
     }
+
+    private static String getFile(String data) throws IOException {
+        ObjectMapper jsonReader = new ObjectMapper(new JsonFactory());
+        Object obj = jsonReader.readValue(data, Object.class);
+        String name = basePath+"component"+count+".yaml";
+        count++;
+        ObjectMapper yamlWriter = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+        yamlWriter.writeValue(new File(name), obj);
+        return name;
+    }
+
 
 }
